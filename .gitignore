@@ -1,0 +1,14 @@
+.idea
+.mvn
+
+node_modules
+target
+
+mvnw
+mvnw.cmd
+
+se3-web-lab4.iml
+yarn.lock
+
+src/main/resources/static/js/
+src/main/resources/application.properties
