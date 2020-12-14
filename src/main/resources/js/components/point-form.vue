@@ -72,13 +72,13 @@
                 return !(this.invalidR || this.invalidY.value || this.invalidX)
             },
             onSubmit(evt) {
-                evt.preventDefault();
+                evt.preventDefault()
 
                 if (this.checkForm()){
                     let points = []
-                    for (let X in this.selectedX){
+                    for (let i = 0; i < this.selectedX.length; i++){
                         points.push({
-                            x: +X,
+                            x: +this.selectedX[i],
                             y: +this.selectedY.trim().replace(",", "."),
                             r: +this.selectedR
                         })

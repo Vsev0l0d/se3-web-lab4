@@ -25,14 +25,12 @@ public class PointController {
     }
 
     @GetMapping("/points")
-    @JsonView(Views.Point.class)
-    Collection<Point> allPoints() {
-        return pointRepository.findAllUserPoints(userRepository.findByUsername("user"));
-    }
+    @JsonView(Views.PointWithId.class)
+    Collection<Point> allPoints() { return pointRepository.findPointsByUser(userRepository.findByUsername("user")); }
 
     @PostMapping("/points")
-    @JsonView(Views.Point.class)
-    Collection<Point> newPoint(@RequestBody Collection<Point> newPoints) {
+    @JsonView(Views.PointWithId.class)
+    Collection<Point> newPoints(@RequestBody Collection<Point> newPoints) {
         List<Point> result = new ArrayList<>();
         for (Point newPoint : newPoints){
             if (checker.check(newPoint)){
@@ -44,12 +42,27 @@ public class PointController {
         return result;
     }
 
+    @DeleteMapping("/points")
+    Collection<Long> deletePoints(@RequestParam Long[] ids) {
+        List<Long> result = new ArrayList<>();
+        for (Long id : ids){
+            Point point = pointRepository.findPointById(id);
+            if (point.getUser().getUsername().equals("user")){
+                pointRepository.deleteById(id);
+                result.add(id);
+            }
+        }
+        return result;
+    }
+
+    @DeleteMapping("/clear")
+    void clear() { pointRepository.deletePointsByUser(userRepository.findByUsername("user")); }
 
     @GetMapping("/points/{r}")
     @JsonView(Views.Point.class)
     Collection<Point> allPointsRecalculation(@PathVariable Double r) {
         List<Point> recalculated = new ArrayList<>();
-        Collection<Point> points = pointRepository.findAllUserPoints(userRepository.findByUsername("user"));
+        Collection<Point> points = pointRepository.findPointsByUser(userRepository.findByUsername("user"));
 
         for (Point p : points) {
             Point point = new Point(p.getX(), p.getY(), r, false);

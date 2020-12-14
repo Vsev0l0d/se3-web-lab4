@@ -7,6 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "points")
 public class Point {
+    @JsonView(Views.PointWithId.class)
+    private @Id @GeneratedValue Long id;
+
     @JsonView(Views.Point.class)
     private Double x;
     @JsonView(Views.Point.class)
@@ -18,8 +21,6 @@ public class Point {
 
     @JsonView(Views.FullPoint.class)
     private @ManyToOne User user;
-    @JsonView(Views.FullPoint.class)
-    private @Id @GeneratedValue Long id;
 
     public Point() {}
 
