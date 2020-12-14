@@ -7,19 +7,30 @@
                 <th>R</th>
                 <th>Result</th>
             </tr>
-            <tr v-for="point in POINTS" :key="point.id" :class="{'selected': point.selected}" @click="clickRow(point)">
+            <tr v-for="point in paginatedPoints" :key="point.id" :class="{'selected': point.selected}" @click="clickRow(point)">
                 <td>{{point.x}}</td>
                 <td>{{point.y}}</td>
                 <td>{{point.r}}</td>
                 <td>{{point.result}}</td>
             </tr>
         </table>
-        <form>
+        <div v-if="!POINTS.length">Table is empty</div>
+        <div v-else>
+            <button @click="pageNumber = 1"><<</button>
+            <button @click="pageNumber -= 1"><</button>
+            <div v-for="page in [pageNumber - 1, pageNumber, pageNumber + 1]"
+                 :key="page" @click="pageClick(page)"
+                 :class="{'selected': page === pageNumber}">
+                {{page > 0 && page <= pages ? page : ''}}
+            </div>
+            <button @click="pageNumber += 1">></button>
+            <button @click="pageNumber = pages">>></button>
+
             <button v-if="countSelectedPoints > 0" @click="deleteSelectedPoints">
                 Delete {{countSelectedPoints}} selected points
             </button>
-            <button v-else @click="CLEAR">Clear</button>
-        </form>
+            <button v-else @click="clear">Clear</button>
+        </div>
     </div>
 </template>
 
@@ -30,7 +41,9 @@
         name: "point-table",
         data(){
             return {
-                countSelectedPoints: 0
+                countSelectedPoints: 0,
+                numberOfRow: 10,
+                pageNumber: 1
             }
         },
         methods: {
@@ -49,9 +62,27 @@
 
                 this.DELETE_POINTS(ids)
                 this.countSelectedPoints = 0
+                if (this.pages() < this.pageNumber) this.pageNumber = this.pages()
+            },
+            pageClick(page){this.pageNumber = page},
+            clear(){this.CLEAR(); this.pageNumber = 1}
+        },
+        watch: {
+            pageNumber: function () {
+                if (this.pageNumber < 1) this.pageNumber = 1
+                let pages = Math.ceil(this.POINTS.length / this.numberOfRow)
+                if (this.pageNumber > pages) this.pageNumber = pages
             }
         },
-        computed: {...mapGetters(["POINTS"])},
+        computed: {
+            ...mapGetters(["POINTS"]),
+            pages(){return Math.ceil(this.POINTS.length / this.numberOfRow)},
+            paginatedPoints(){
+                let from = (this.pageNumber - 1) * this.numberOfRow
+                let to = from + this.numberOfRow
+                return this.POINTS.slice(from, to)
+            }
+        },
         mounted(){this.GET_POINTS()}
     }
 </script>
