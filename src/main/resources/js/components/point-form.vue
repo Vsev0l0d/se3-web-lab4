@@ -49,10 +49,10 @@
         watch: {
             selectedX: function () {this.checkX()},
             selectedY: function () {this.checkY()},
-            selectedR: function () {this.checkR()}
+            selectedR: function () {this.checkR(); this.UPDATE_R(this.selectedR)}
         },
         methods: {
-            ...mapActions(['POST_POINTS']),
+            ...mapActions(['POST_POINTS', 'UPDATE_R']),
             checkX(){this.invalidX = this.selectedX.length < 1},
             checkR(){this.invalidR = this.values.indexOf(this.selectedR) === -1},
             checkY(){
@@ -75,7 +75,7 @@
                 evt.preventDefault()
 
                 if (this.checkForm()){
-                    let points = []
+                    const points = []
                     for (let i = 0; i < this.selectedX.length; i++){
                         points.push({
                             x: +this.selectedX[i],

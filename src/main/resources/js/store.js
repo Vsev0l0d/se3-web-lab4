@@ -6,11 +6,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        points:[]
+        points:[],
+        r: null
     },
     actions: {
         GET_POINTS({commit}){
-            return axios.get('/points')
+            axios.get('/points')
                 .then((response) =>{
                 commit('ADD_POINTS', response.data)
             })
@@ -28,11 +29,14 @@ const store = new Vuex.Store({
                 .then(commit('CLEAR_POINTS'))
         },
         DELETE_POINTS({commit}, ids){
-            let urlData = '?ids=' + ids.join()
+            const urlData = '?ids=' + ids.join()
             axios.delete('/points' + urlData)
                 .then((response) =>{
                     commit('REMOVE_POINTS', response.data)
                 })
+        },
+        UPDATE_R({commit}, r){
+            commit('SET_R', r)
         }
     },
     mutations: {
@@ -45,11 +49,17 @@ const store = new Vuex.Store({
         },
         REMOVE_POINTS:(state, ids) => {
             state.points = state.points.filter(point => ids.indexOf(point.id) === -1)
+        },
+        SET_R: (state, r) => {
+            state.r = r
         }
     },
     getters: {
         POINTS(state){
             return state.points
+        },
+        R(state){
+            return state.r
         }
     }
 })

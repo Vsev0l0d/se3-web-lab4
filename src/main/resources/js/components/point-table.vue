@@ -70,16 +70,16 @@
         watch: {
             pageNumber: function () {
                 if (this.pageNumber < 1) this.pageNumber = 1
-                let pages = Math.ceil(this.POINTS.length / this.numberOfRow)
+                const pages = Math.ceil(this.POINTS.length / this.numberOfRow)
                 if (this.pageNumber > pages) this.pageNumber = pages
             }
         },
         computed: {
-            ...mapGetters(["POINTS"]),
+            ...mapGetters(['POINTS']),
             pages(){return Math.ceil(this.POINTS.length / this.numberOfRow)},
             paginatedPoints(){
-                let from = (this.pageNumber - 1) * this.numberOfRow
-                let to = from + this.numberOfRow
+                const from = (this.pageNumber - 1) * this.numberOfRow
+                const to = from + this.numberOfRow
                 return this.POINTS.slice(from, to)
             }
         },
