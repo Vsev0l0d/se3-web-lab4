@@ -1,14 +1,13 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "./pages/Home.vue"
+import Login from "./pages/Login.vue"
 
 Vue.use(VueRouter);
 
 const routes = [
     {
-        path: "/",
-        name: "home",
-        component: Home
+        path: '/login',
+        component: Login
     },
     {
         path: "/main",
@@ -16,10 +15,10 @@ const routes = [
         component: () => import("./pages/Main.vue")
     },
     {
-        path: '*', redirect: '/'
+        path: '*', redirect: '/login'
     }
 ];
 
-const router = new VueRouter({routes});
+const router = new VueRouter({/*mode: 'history',*/ routes});
 
 export default router;

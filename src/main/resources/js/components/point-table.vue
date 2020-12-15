@@ -62,7 +62,7 @@
 
                 this.DELETE_POINTS(ids)
                 this.countSelectedPoints = 0
-                if (this.pages() < this.pageNumber) this.pageNumber = this.pages()
+                if (this.pages < this.pageNumber) this.pageNumber = this.pages
             },
             pageClick(page){this.pageNumber = page},
             clear(){this.CLEAR(); this.pageNumber = 1}

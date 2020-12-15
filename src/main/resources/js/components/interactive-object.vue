@@ -7,6 +7,7 @@
 <script>
     //это ужасный код, никогда так не пишите (просто оно работает, а я очень устал)
     import {mapActions, mapGetters} from 'vuex'
+    import {points} from "../store/modules/points"
     import axios from 'axios'
     export default {
         name: "interactive-object",
@@ -30,7 +31,7 @@
             vm.redraw()
         },
         methods: {
-            ...mapActions(['POST_POINTS']),
+            ...mapActions(['POST_POINTS', 'GET_RECALCULATED_POINTS']),
             redraw(){
                 const vm = this
                 const R = vm.R
@@ -139,15 +140,14 @@
             },
             paintPoints(R) {
                 const vm = this
-                axios.get('/points/' + R)
-                    .then((response) =>{
-                        response.data.forEach((point) => {
-                            const x = vm.width / 2 + Number(point.x) * Math.round(vm.width / 3)  / Number(R);
-                            const y = vm.height / 2 - Number(point.y) * Math.round(vm.height / 3) / Number(R);
-                            if (point.result)vm.paintPoint(x, y, "black")
-                            else vm.paintPoint(x, y, "red");
-                        })
+                axios.get('/points/' + R).then((response) => {
+                    return response.data.forEach((point) => {
+                        const x = vm.width / 2 + Number(point.x) * Math.round(vm.width / 3) / Number(R);
+                        const y = vm.height / 2 - Number(point.y) * Math.round(vm.height / 3) / Number(R);
+                        if (point.result) vm.paintPoint(x, y, "black")
+                        else vm.paintPoint(x, y, "red");
                     })
+                })
             },
             paintPoint(x, y, color){
                 this.ctx.fillStyle = color;
@@ -174,9 +174,7 @@
                 }
             }
         },
-        computed: {
-            ...mapGetters(['R', 'POINTS']),
-        },
+        computed: {...mapGetters(['R', 'POINTS'])},
         watch: {
             R: function () {this.redraw()},
             POINTS: function () {this.redraw()}
