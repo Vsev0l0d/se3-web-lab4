@@ -18,11 +18,11 @@
         <div v-else>
             <button @click="pageNumber = 1"><<</button>
             <button @click="pageNumber -= 1"><</button>
-            <div v-for="page in [pageNumber - 1, pageNumber, pageNumber + 1]"
+            <button v-for="page in [pageNumber - 1, pageNumber, pageNumber + 1]"
                  :key="page" @click="pageClick(page)"
-                 :class="{'selected': page === pageNumber}">
-                {{page > 0 && page <= pages ? page : ''}}
-            </div>
+                 :class="{'selected': page === pageNumber}" v-if="page > 0 && page <= pages">
+                {{page}}
+            </button>
             <button @click="pageNumber += 1">></button>
             <button @click="pageNumber = pages">>></button>
 

@@ -1,4 +1,5 @@
 import AuthService from '../../auth/auth-service'
+import router from "../../router"
 
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user
@@ -23,6 +24,7 @@ export const auth = {
         logout({ commit }) {
             AuthService.logout()
             commit('logout')
+            router.replace('/login').then()
         },
         register(user) {
             return AuthService.register(user).then(
