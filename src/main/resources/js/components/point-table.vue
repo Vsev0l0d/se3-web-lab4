@@ -13,16 +13,18 @@
                 <td>{{point.r}}</td>
                 <td>{{point.result}}</td>
             </tr>
+            <tr v-for="index in (numberOfRowInTable - paginatedPoints.length)">
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
         </table>
         <div v-if="!POINTS.length">Table is empty</div>
         <div v-else>
             <button @click="pageNumber = 1"><<</button>
             <button @click="pageNumber -= 1"><</button>
-            <button v-for="page in [pageNumber - 1, pageNumber, pageNumber + 1]"
-                 :key="page" @click="pageClick(page)"
-                 :class="{'selected': page === pageNumber}" v-if="page > 0 && page <= pages">
-                {{page}}
-            </button>
+            <button>{{pageNumber}}</button>
             <button @click="pageNumber += 1">></button>
             <button @click="pageNumber = pages">>></button>
 
@@ -42,7 +44,6 @@
         data(){
             return {
                 countSelectedPoints: 0,
-                numberOfRow: 10,
                 pageNumber: 1
             }
         },
@@ -64,22 +65,21 @@
                 this.countSelectedPoints = 0
                 if (this.pages < this.pageNumber) this.pageNumber = this.pages
             },
-            pageClick(page){this.pageNumber = page},
             clear(){this.CLEAR(); this.pageNumber = 1}
         },
         watch: {
             pageNumber: function () {
                 if (this.pageNumber < 1) this.pageNumber = 1
-                const pages = Math.ceil(this.POINTS.length / this.numberOfRow)
+                const pages = Math.ceil(this.POINTS.length / this.numberOfRowInTable)
                 if (this.pageNumber > pages) this.pageNumber = pages
             }
         },
         computed: {
-            ...mapGetters(['POINTS']),
-            pages(){return Math.ceil(this.POINTS.length / this.numberOfRow)},
+            ...mapGetters(['POINTS', 'numberOfRowInTable']),
+            pages(){return Math.ceil(this.POINTS.length / this.numberOfRowInTable)},
             paginatedPoints(){
-                const from = (this.pageNumber - 1) * this.numberOfRow
-                const to = from + this.numberOfRow
+                const from = (this.pageNumber - 1) * this.numberOfRowInTable
+                const to = from + this.numberOfRowInTable
                 return this.POINTS.slice(from, to)
             }
         },

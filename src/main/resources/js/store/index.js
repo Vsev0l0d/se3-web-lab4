@@ -1,17 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {auth} from "./modules/auth"
-import {points} from "./modules/points"
+import {auth} from './modules/auth'
+import {points} from './modules/points'
+import {customization} from './modules/customization'
 
 Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     modules: {
         auth,
-        points
-    },
-    state: {isDarkTheme: true},
-    actions: {changeTheme({commit}){commit('changeThemeColor')}},
-    mutations: {changeThemeColor(state){state.isDarkTheme = !state.isDarkTheme}},
-    getters: {isDarkTheme(state){return state.isDarkTheme}}
+        points,
+        customization
+    }
 })

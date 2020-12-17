@@ -4,12 +4,12 @@
             <div class="form-group">
                 <label for="username">Username</label>
                 <input id="username" v-model="user.username" type="text"
-                       oninput="this.value=this.value.replace(/\s/,'')"/>
+                       oninput="this.value=this.value.replace(/\s/,'')" maxlength="20"/>
 
             </div>
             <div>
                 <label for="password">Password</label>
-                <input id="password" v-model="user.password" type="password"/>
+                <input id="password" v-model="user.password" type="password" maxlength="20"/>
             </div>
 
             <div>
@@ -44,28 +44,32 @@
             ...mapActions(['login', 'register']),
             checkForm(){
                 this.messages = []
-                if (this.user.username === ''){this.messages.push("Enter username")}
+                if (this.user.username === '') this.messages.push("Enter username")
+                else if (this.user.username.length < 3) this.messages.push("Username must be at least 3 characters")
                 if (this.user.password === ''){this.messages.push("Enter password")}
-                return this.messages.length
+                else if (this.user.password.length < 6) this.messages.push("Password must be at least 6 characters")
+                return this.messages.length === 0
             },
             handleLogin(){
-                    if (this.checkForm()) {
-                        this.login(this.user).then(
-                            () => {this.$router.push('/main')},
-                            error => {
-                                this.messages.push(
-                                    (error.response && error.response.data && error.response.data.message) ||
-                                    error.message ||
-                                    error.toString()
-                                )
-                            }
-                        )
-                    }
+                if (this.checkForm()) {
+                    this.login(this.user).then(
+                        () => {
+                            this.$router.push('/main')
+                        },
+                        error => {
+                            this.messages.push(
+                                (error.response && error.response.data && error.response.data.message) ||
+                                error.message ||
+                                error.toString()
+                            )
+                        }
+                    )
+                }
             },
             handleRegistration(){
                 if (this.checkForm()) {
                     this.register(this.user).then(
-                        (response) => {alert(response)},
+                        (response) => {alert(response.message)},
                         error => {
                             this.messages.push(
                                 (error.response && error.response.data && error.response.data.message) ||

@@ -1,13 +1,8 @@
 <template>
     <div>
-        <div v-if="isLoggedIn">
-            <interactive-object/>
-            <point-form/>
-            <point-table/>
-        </div>
-        <div v-else>
-            <router-link to="/login">Log in</router-link>
-        </div>
+        <interactive-object/>
+        <point-form/>
+        <point-table/>
     </div>
 </template>
 
@@ -20,7 +15,12 @@
     export default {
         name: "Main",
         components: {pointTable, pointForm, interactiveObject},
-        computed: {...mapGetters(['isLoggedIn'])}
+        computed: {...mapGetters(['isLoggedIn'])},
+        created() {
+            if (!this.isLoggedIn) {
+                this.$router.push('/login')
+            }
+        },
     }
 </script>
 

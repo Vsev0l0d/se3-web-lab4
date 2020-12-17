@@ -8,13 +8,13 @@ export const points = {
     },
     actions: {
         GET_POINTS({commit}){
-            axios.get('/points', { headers: authHeader() })
+            axios.get('/api/points', { headers: authHeader() })
                 .then((response) =>{
                     commit('ADD_POINTS', response.data)
                 }).catch(console.log.bind(console))
         },
         POST_POINTS({commit}, points){
-            axios.post('/points',
+            axios.post('/api/points',
                 JSON.stringify(points),
                 {headers: {'Content-Type': 'application/json;charset=UTF-8', "Access-Control-Allow-Origin": "*", ...authHeader()}}
             ).then((response) =>{
@@ -22,18 +22,21 @@ export const points = {
             }).catch(console.log.bind(console))
         },
         CLEAR({commit}){
-            axios.delete('/clear', { headers: authHeader() })
+            axios.delete('/api/clear', { headers: authHeader() })
                 .then(commit('CLEAR_POINTS')).catch(console.log.bind(console))
         },
         DELETE_POINTS({commit}, ids){
             const urlData = '?ids=' + ids.join()
-            axios.delete('/points' + urlData, { headers: authHeader() })
+            axios.delete('/api/points' + urlData, { headers: authHeader() })
                 .then((response) =>{
                     commit('REMOVE_POINTS', response.data)
                 }).catch(console.log.bind(console))
         },
         UPDATE_R({commit}, r){
             commit('SET_R', r)
+        },
+        RECALCULATED_POINTS({commit}, r){
+            return axios.get('/api/points/' + r, { headers: authHeader() })
         }
     },
     mutations: {

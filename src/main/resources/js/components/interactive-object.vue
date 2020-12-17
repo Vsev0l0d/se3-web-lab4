@@ -9,6 +9,7 @@
     import {mapActions, mapGetters} from 'vuex'
     import {points} from "../store/modules/points"
     import axios from 'axios'
+    import authHeader from "../auth/auth-header"
     export default {
         name: "interactive-object",
         data(){
@@ -18,7 +19,6 @@
                 width: null,
                 height: null,
                 values: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2],
-                areaColor: "#b8daff",
                 backgroundColor: "lightgray"
             }
         },
@@ -31,7 +31,7 @@
             vm.redraw()
         },
         methods: {
-            ...mapActions(['POST_POINTS', 'GET_RECALCULATED_POINTS']),
+            ...mapActions(['POST_POINTS', 'RECALCULATED_POINTS']),
             redraw(){
                 const vm = this
                 const R = vm.R
@@ -140,12 +140,12 @@
             },
             paintPoints(R) {
                 const vm = this
-                axios.get('/points/' + R).then((response) => {
+                this.RECALCULATED_POINTS(R).then((response) => {
                     return response.data.forEach((point) => {
-                        const x = vm.width / 2 + Number(point.x) * Math.round(vm.width / 3) / Number(R);
-                        const y = vm.height / 2 - Number(point.y) * Math.round(vm.height / 3) / Number(R);
-                        if (point.result) vm.paintPoint(x, y, "black")
-                        else vm.paintPoint(x, y, "red");
+                        const x = vm.width / 2 + Number(point.x) * Math.round(vm.width / 3) / Math.abs(Number(R));
+                        const y = vm.height / 2 - Number(point.y) * Math.round(vm.height / 3) / Math.abs(Number(R));
+                        if (point.result) vm.paintPoint(x, y, vm.hitColor)
+                        else vm.paintPoint(x, y, vm.missColor);
                     })
                 })
             },
@@ -161,8 +161,8 @@
                 const x = event.pageX - (vm.canvas.getBoundingClientRect().left + pageXOffset)
                 const y = event.pageY - (vm.canvas.getBoundingClientRect().top + pageYOffset)
 
-                const cordX = Math.round(((x - vm.width / 2) * Number(r) / Math.round(vm.width / 3))/0.5)*0.5
-                const cordY = ((vm.height / 2 - y) * Number(r) / Math.round(vm.height / 3)).toFixed(5)
+                const cordX = Math.round(((x - vm.width / 2) * Math.abs(Number(r)) / Math.round(vm.width / 3))/0.5)*0.5
+                const cordY = ((vm.height / 2 - y) * Math.abs(Number(r)) / Math.round(vm.height / 3)).toFixed(5)
 
 
                 if (vm.values.indexOf(cordX) !== -1 && cordY >= -3 && cordY <= 3 && vm.values.indexOf(r) !== -1){
@@ -174,7 +174,7 @@
                 }
             }
         },
-        computed: {...mapGetters(['R', 'POINTS'])},
+        computed: {...mapGetters(['R', 'POINTS', 'areaColor', 'hitColor', 'missColor'])},
         watch: {
             R: function () {this.redraw()},
             POINTS: function () {this.redraw()}

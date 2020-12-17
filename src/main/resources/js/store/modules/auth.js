@@ -26,7 +26,7 @@ export const auth = {
             commit('logout')
             router.replace('/login').then()
         },
-        register(user) {
+        register({ commit }, user) {
             return AuthService.register(user).then(
                 response => {return Promise.resolve(response.data)},
                 error => {return Promise.reject(error)}
