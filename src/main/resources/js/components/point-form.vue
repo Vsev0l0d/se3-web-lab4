@@ -110,6 +110,7 @@
             ...mapGetters(['isDarkTheme']),
             validY(){return this.invalidY.value != null ? !this.invalidY.value : null}
         },
+        mounted() {this.UPDATE_R(null)}
     }
 </script>
 
