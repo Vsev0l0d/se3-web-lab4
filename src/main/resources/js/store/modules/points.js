@@ -10,7 +10,7 @@ export const points = {
         GET_POINTS({commit}){
             axios.get('/api/points', { headers: authHeader() })
                 .then((response) =>{
-                    commit('ADD_POINTS', response.data)
+                    commit('SET_POINTS', response.data)
                 }).catch(console.log.bind(console))
         },
         POST_POINTS({commit}, points){
@@ -41,6 +41,9 @@ export const points = {
     },
     mutations: {
         CLEAR_POINTS: (state) => {state.data = []},
+        SET_POINTS: (state, points) => {
+            state.data = points
+        },
         ADD_POINTS: (state, points) => {
             for (let i = 0; i < points.length; i++) {
                 points[i].selected = false
