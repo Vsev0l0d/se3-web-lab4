@@ -140,4 +140,15 @@
     .bg-indigo-200{
         background-color: #c29ffa;
     }
+    .good--main-image,
+    .good--backside-image {
+        background-color: rgba(0, 0, 0, .05);
+        background-image: url(https://vuejs.org/images/logo.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .good--backside-image {
+        opacity: .7
+    }
 </style>

@@ -1,24 +1,27 @@
 <template>
-    <header>
+    <header class="header">
         <b-nav :class="['navbar', isDarkTheme ? 'navbar-dark bg-dark' : 'navbar-light bg-indigo-200']">
             <b-nav-text>Variant 31136, Kantorov Vsevolod, P3212</b-nav-text>
             <span class="secret">получается креатех закончился</span>
             <div v-if="isLoggedIn" class="atop">
-                <b-button :variant="[isDarkTheme ? 'outline-secondary' : 'light']">Settings</b-button>
+                <b-button v-b-modal.modalSettings :variant="[isDarkTheme ? 'outline-secondary' : 'light']">Settings</b-button>
                 <b-button @click="logout" :variant="[isDarkTheme ? 'outline-secondary' : 'light']">Logout</b-button>
             </div>
-            <div class="atop">
+            <div v-else class="atop">
                 <b-button v-if="isDarkTheme" @click="changeTheme" variant="outline-secondary">Light theme</b-button>
                 <b-button v-else @click="changeTheme" variant="light">Dark theme</b-button>
             </div>
         </b-nav>
+        <settings/>
     </header>
 </template>
 
 <script>
     import {mapActions, mapGetters} from "vuex"
+    import Settings from "../components/settings.vue"
     export default {
         name: "running-title",
+        components: {Settings},
         computed: {...mapGetters(['isLoggedIn', 'isDarkTheme'])},
         methods: {...mapActions(['logout', 'changeTheme'])}
     }
@@ -32,7 +35,7 @@
         color: transparent;
     }
     .atop{
-        z-index: 1;
+        z-index: 11;
     }
     .btn-light {
         color: #212529;
@@ -48,5 +51,10 @@
         color: #212529;
         background-color: #e0cffc;
         border-color: #212529;
+    }
+    .header{
+        position: sticky;
+        top:0;
+        z-index: 10;
     }
 </style>

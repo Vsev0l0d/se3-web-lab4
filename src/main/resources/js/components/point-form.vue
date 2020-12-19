@@ -5,8 +5,8 @@
         <div :class="['input-group mb-5', isDarkTheme ? 'bg-dark': 'bg-indigo-200']" >
             <label :class="['input-group-text',
             isDarkTheme ?
-            {'bg-danger text-white': invalidY.value} :
-            {'bg-red-400 text-white': invalidY.value}]">X</label>
+            {'bg-danger text-white': invalidX} :
+            {'bg-red-400 text-white': invalidX}]">X</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <div v-for="(value, index) in values" :key="index">
                     <input type="checkbox" class="btn-check" autocomplete="off"
@@ -32,8 +32,8 @@
         <div :class="['input-group mb-5', isDarkTheme ? 'bg-dark': 'bg-indigo-200']">
             <label :class="['input-group-text',
             isDarkTheme ?
-            {'bg-danger text-white': invalidY.value} :
-            {'bg-red-400 text-white': invalidY.value}]">R</label>
+            {'bg-danger text-white': invalidR} :
+            {'bg-red-400 text-white': invalidR}]">R</label>
             <div class="btn-group btn-group-toggle" data-toggle="buttons">
                 <div v-for="(value, index) in values" :key="index">
                     <input type="radio" class="btn-check" autocomplete="off"

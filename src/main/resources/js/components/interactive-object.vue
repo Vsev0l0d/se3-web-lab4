@@ -174,13 +174,17 @@
             }
         },
         computed: {
-            ...mapGetters(['R', 'POINTS', 'areaColor', 'hitColor', 'missColor', 'isDarkTheme']),
-            backgroundColor(){return this.isDarkTheme ? '#dee2e6' : '#c29ffa'}
+            ...mapGetters(['R', 'POINTS', 'areaColor', 'hitColor',
+                'missColor', 'isDarkTheme', 'backgroundColor']),
         },
         watch: {
             R: function () {this.redraw()},
             POINTS: function () {this.redraw()},
-            isDarkTheme: function () {this.redraw()}
+            isDarkTheme: function () {this.redraw()},
+            areaColor: function () {this.redraw()},
+            hitColor: function () {this.redraw()},
+            missColor: function () {this.redraw()},
+            backgroundColor: function () {this.redraw()}
         }
     }
 </script>
