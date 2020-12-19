@@ -19,7 +19,6 @@
                 width: null,
                 height: null,
                 values: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2],
-                backgroundColor: "lightgray"
             }
         },
         mounted() {
@@ -174,10 +173,14 @@
                 }
             }
         },
-        computed: {...mapGetters(['R', 'POINTS', 'areaColor', 'hitColor', 'missColor'])},
+        computed: {
+            ...mapGetters(['R', 'POINTS', 'areaColor', 'hitColor', 'missColor', 'isDarkTheme']),
+            backgroundColor(){return this.isDarkTheme ? '#dee2e6' : '#c29ffa'}
+        },
         watch: {
             R: function () {this.redraw()},
-            POINTS: function () {this.redraw()}
+            POINTS: function () {this.redraw()},
+            isDarkTheme: function () {this.redraw()}
         }
     }
 </script>

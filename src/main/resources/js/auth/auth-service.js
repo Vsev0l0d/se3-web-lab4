@@ -18,7 +18,6 @@ class AuthService {
 
     logout() {
         localStorage.removeItem('user')
-        localStorage.removeItem('settings')
     }
 
     register(user) {

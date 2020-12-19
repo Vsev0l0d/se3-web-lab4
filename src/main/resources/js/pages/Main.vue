@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <interactive-object/>
-        <point-form/>
+    <div class="container-fluid">
+        <div class="container content mt-2">
+            <interactive-object/>
+            <point-form/>
+        </div>
         <point-table/>
     </div>
 </template>
@@ -25,5 +27,11 @@
 </script>
 
 <style scoped>
-
+    .content{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        justify-items: center;
+        row-gap: 5px;
+        padding: 0;
+    }
 </style>

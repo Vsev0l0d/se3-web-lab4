@@ -1,37 +1,56 @@
 <template>
-    <form @submit="onSubmit">
-        <div id="x">
-            <label for="x" :class="{'invalid': invalidX}">X:</label>
-            <div v-for="(value, index) in values" :key="index">
-                <label>
-                    <input type="checkbox" :id="'x'+index" :value="value" v-model.number="selectedX">
-                    {{value}}
-                </label>
+    <b-form @submit="onSubmit" :class="['form-container p-4',
+     isDarkTheme ? 'bg-dark': 'bg-indigo-200', {'text-light': isDarkTheme}]">
+
+        <div :class="['input-group mb-5', isDarkTheme ? 'bg-dark': 'bg-indigo-200']" >
+            <label :class="['input-group-text',
+            isDarkTheme ?
+            {'bg-danger text-white': invalidY.value} :
+            {'bg-red-400 text-white': invalidY.value}]">X</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div v-for="(value, index) in values" :key="index">
+                    <input type="checkbox" class="btn-check" autocomplete="off"
+                           :id="'x'+index" :value="value" v-model.number="selectedX">
+                    <label :class="[isDarkTheme ? 'btn btn-outline-secondary m-0 text-light' : 'btn btn-light m-0']"
+                           :for="'x'+index">{{value}}</label>
+                </div>
             </div>
         </div>
 
-        <div id="y">
-            <label for="y0" :class="{'invalid': invalidY.value}">Y:</label>
-            <input type="text" id="y0" maxlength="8" v-model="selectedY">
-            <div v-if="invalidY.value" class="invalid">{{invalidY.errorText}}</div>
+        <div class="input-group mb-5">
+            <label for="y" :class="['input-group-text',
+            isDarkTheme ?
+            {'bg-danger text-white': invalidY.value} :
+            {'bg-red-400 text-white': invalidY.value}]">Y</label>
+            <b-form-input id="y" v-model="selectedY"
+                          :state="validY" type="text"
+                          maxlength="8"/>
+            <b-form-invalid-feedback :class="[isDarkTheme ? 'text-light' : 'text-dark']"
+                                     :state="validY">{{invalidY.errorText}}</b-form-invalid-feedback>
         </div>
 
-        <div id="r">
-            <label for="r" :class="{'invalid': invalidR}">R:</label>
-            <div v-for="(value, index) in values" :key="index">
-                <label>
-                    <input type="radio" :id="'r'+index"  v-model.number="selectedR" :value="value">
-                    {{value}}
-                </label>
+        <div :class="['input-group mb-5', isDarkTheme ? 'bg-dark': 'bg-indigo-200']">
+            <label :class="['input-group-text',
+            isDarkTheme ?
+            {'bg-danger text-white': invalidY.value} :
+            {'bg-red-400 text-white': invalidY.value}]">R</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <div v-for="(value, index) in values" :key="index">
+                    <input type="radio" class="btn-check" autocomplete="off"
+                           :id="'r'+index" v-model.number="selectedR" :value="value">
+                    <label :class="[isDarkTheme ? 'btn btn-outline-secondary m-0 text-light' : 'btn btn-light m-0']"
+                           :for="'r'+index">{{value}}</label>
+                </div>
             </div>
         </div>
 
-        <button type="submit">Submit</button>
-    </form>
+        <b-button type="submit" class="btn-send"
+                  :variant="[isDarkTheme ? 'outline-secondary text-light' : 'light']">Submit</b-button>
+    </b-form>
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         name: "point-form",
@@ -42,7 +61,7 @@
                 selectedR: null,
                 values: [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2],
                 invalidX: false,
-                invalidY: {value: false, errorText: ""},
+                invalidY: {value: null, errorText: ""},
                 invalidR: false
             }
         },
@@ -56,7 +75,7 @@
             checkX(){this.invalidX = this.selectedX.length < 1},
             checkR(){this.invalidR = this.values.indexOf(this.selectedR) === -1},
             checkY(){
-                let y = (this.selectedY != null) ? this.selectedY.trim().replace(",", ".") : ""
+                const y = (this.selectedY != null) ? this.selectedY.trim().replace(",", ".") : ""
                 this.invalidY = {value: false, errorText: ""}
 
                 if (y === "") {
@@ -86,10 +105,43 @@
                     this.POST_POINTS(points)
                 }
             }
-        }
+        },
+        computed: {
+            ...mapGetters(['isDarkTheme']),
+            validY(){return this.invalidY.value != null ? !this.invalidY.value : null}
+        },
     }
 </script>
 
 <style scoped>
-
+    .bg-red-400{
+        background-color: #e35d6a;
+    }
+    .form-container{
+        max-width: 500px;
+    }
+    .btn-check{
+        position: absolute;
+    }
+    .input-group-text{
+        border-radius: 0;
+    }
+    .btn-light {
+        color: #212529;
+        background-color: #c29ffa;
+        border-color: #212529;
+    }
+    .btn-light:focus {
+        color: #212529;
+        background-color: #c29ffa;
+        border-color: #212529;
+    }
+    .btn-light:hover {
+        color: #212529;
+        background-color: #e0cffc;
+        border-color: #212529;
+    }
+    .btn-send{
+        position: absolute;
+    }
 </style>

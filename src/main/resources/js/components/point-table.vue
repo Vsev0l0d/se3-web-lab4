@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table>
+        <table :class="['table mt-2 mb-1', isDarkTheme ? 'table-dark' : 'bg-indigo-200']">
             <tr>
                 <th>X</th>
                 <th>Y</th>
@@ -20,19 +20,19 @@
                 <td>-</td>
             </tr>
         </table>
-        <div v-if="!POINTS.length">Table is empty</div>
-        <div v-else>
-            <button @click="pageNumber = 1"><<</button>
-            <button @click="pageNumber -= 1"><</button>
-            <button>{{pageNumber}}</button>
-            <button @click="pageNumber += 1">></button>
-            <button @click="pageNumber = pages">>></button>
+        <div v-if="!POINTS.length" style="text-align: center" :class="[isDarkTheme ? 'bg-dark text-light': 'bg-indigo-200']">Table is empty</div>
+        <nav v-else :class="['nav justify-content-center', isDarkTheme ? 'bg-dark': 'bg-indigo-200']">
+            <button  @click="pageNumber = 1" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']"><<</button>
+            <button @click="pageNumber -= 1" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']"><</button>
+            <button :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']">{{pageNumber}}</button>
+            <button @click="pageNumber += 1" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']">></button>
+            <button @click="pageNumber = pages" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']">>></button>
 
-            <button v-if="countSelectedPoints > 0" @click="deleteSelectedPoints">
+            <button v-if="countSelectedPoints > 0" @click="deleteSelectedPoints" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']">
                 Delete {{countSelectedPoints}} selected points
             </button>
-            <button v-else @click="clear">Clear</button>
-        </div>
+            <button v-else @click="clear" :class="[isDarkTheme ? 'btn btn-dark m-0' : 'btn btn-light m-0']">Clear</button>
+        </nav>
     </div>
 </template>
 
@@ -75,7 +75,7 @@
             }
         },
         computed: {
-            ...mapGetters(['POINTS', 'numberOfRowInTable']),
+            ...mapGetters(['POINTS', 'numberOfRowInTable', 'isDarkTheme']),
             pages(){return Math.ceil(this.POINTS.length / this.numberOfRowInTable)},
             paginatedPoints(){
                 const from = (this.pageNumber - 1) * this.numberOfRowInTable
@@ -86,3 +86,27 @@
         mounted(){this.GET_POINTS()}
     }
 </script>
+
+<style scoped>
+    .selected {
+        background-color: #f1aeb5;
+    }
+    .btn-light {
+        color: #212529;
+        background-color: #c29ffa;
+        border-color: #212529;
+    }
+    .btn-light:focus {
+        color: #212529;
+        background-color: #c29ffa;
+        border-color: #212529;
+    }
+    .btn-light:hover {
+        color: #212529;
+        background-color: #e0cffc;
+        border-color: #212529;
+    }
+    .atop{
+        z-index: 1;
+    }
+</style>
