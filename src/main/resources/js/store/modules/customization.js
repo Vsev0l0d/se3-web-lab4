@@ -1,7 +1,7 @@
 import Customization from '../../auth/customization'
 
 const settings = JSON.parse(localStorage.getItem('settings'))
-const defaultSettings = new Customization(true, 10,'#b8daff', 'black', 'red', '#dee2e6')
+const defaultSettings = new Customization(true, 10,'#b8daff', '#000000', '#ff140d', '#dee2e6')
 
 const initialState = settings ? settings : defaultSettings
 

@@ -61,8 +61,8 @@
             return {
                 numberOfRow: 10,
                 areaColoring: '#b8daff',
-                hitColoring: 'black',
-                missColoring: 'red',
+                hitColoring: '#000000',
+                missColoring: '#ff140d',
                 backgroundColoring: '#dee2e6'
             }
         },
@@ -84,8 +84,8 @@
                 if (!this.isDarkTheme) this.changeTheme()
                 this.numberOfRow = 10
                 this.areaColoring = '#b8daff'
-                this.hitColoring = 'black'
-                this.missColoring = 'red'
+                this.hitColoring = '#000000'
+                this.missColoring = '#ff140d'
                 this.backgroundColoring = '#dee2e6'
             }
         },

@@ -1,6 +1,7 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from "vue"
+import VueRouter from "vue-router"
 import Login from "./pages/Login.vue"
+import Main from "./pages/Main.vue"
 
 Vue.use(VueRouter);
 
@@ -12,13 +13,13 @@ const routes = [
     {
         path: "/main",
         name: "main",
-        component: () => import("./pages/Main.vue")
+        component: Main
     },
     {
         path: '*', redirect: '/login'
     }
 ];
 
-const router = new VueRouter({/*mode: 'history',*/ routes});
+const router = new VueRouter({routes});
 
 export default router;
