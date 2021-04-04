@@ -26,7 +26,9 @@
                           :state="validY" type="text"
                           maxlength="8"/>
             <b-form-invalid-feedback :class="[isDarkTheme ? 'text-light' : 'text-dark']"
-                                     :state="validY">{{invalidY.errorText}}</b-form-invalid-feedback>
+                                     :state="validY">
+                <div style="position: absolute">{{invalidY.errorText}}</div>
+            </b-form-invalid-feedback>
         </div>
 
         <div :class="['input-group mb-5', isDarkTheme ? 'bg-dark': 'bg-indigo-200']">
@@ -44,7 +46,7 @@
             </div>
         </div>
 
-        <b-button type="submit" class="btn-send"
+        <b-button type="submit"
                   :variant="[isDarkTheme ? 'outline-secondary text-light' : 'light']">Submit</b-button>
     </b-form>
 </template>
@@ -142,7 +144,7 @@
         background-color: #e0cffc;
         border-color: #212529;
     }
-    .btn-send{
-        position: absolute;
+    .invalid-feedback {
+        margin-top: 0;
     }
 </style>
